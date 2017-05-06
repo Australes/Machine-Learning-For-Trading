@@ -3,7 +3,6 @@ import numpy as np
 
 def random_integer():
 	d = np.random.randint(10, 20, size = (6, 6)) # integers in [low, high) as 2D array
-
 	print(d)
 	print('*' * 50)
 	return d
