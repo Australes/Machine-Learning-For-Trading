@@ -32,8 +32,8 @@ def get_data(symbols, dates):
 	print(df)
 	return df
 
-def plot(df):
-	ax = df.plot(title = 'Stock prices', fontsize = 12)
+def plot(df, title):
+	ax = df.plot(title = title, fontsize = 12)
 	ax.set_xlabel('Date')
 	ax.set_ylabel('Price')
 	plt.show()
@@ -52,8 +52,8 @@ if __name__ == "__main__":
 	dates = dates_creator()
 	df = get_data(symbols, dates)
 	daily_returns = get_daily_returns(df)
-	plot(df)
-	plot(daily_returns)
+	plot(df, 'Stock prices')
+	plot(daily_returns,'Daily returns')
 	
 
 	
