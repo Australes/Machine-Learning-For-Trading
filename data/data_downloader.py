@@ -2,7 +2,7 @@ import pandas as pd
 import datetime
 from pandas_datareader import data
 
-tickers = ['AAPL', 'SPY' , 'IBM', 'GOOG', 'TSLA']
+tickers = ['AAPL', 'SPY' , 'IBM', 'GOOG', 'TSLA', 'FB']
 
 for ticker in tickers:
     end_date = datetime.datetime.now()

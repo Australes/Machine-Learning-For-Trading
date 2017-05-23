@@ -78,28 +78,6 @@ if __name__ == "__main__":
     where:
     .sum(axis = 1) means 'sum all the columns '
     *********************************************************************************************
-    Sharpe ratio = (Rp - Rf) / Stdev
-    in other words: 
-    SR = mean(daily-returns - daily-risk-free-rate) / std((daily-returns - daily-risk-free-rate))
-    There are few ways to get value of the daily risk free rate:
-    - LIBOR
-    - 3 months treasury bill
-    - 0 %
-
-    We can calculate it in more traditional (easy and fast) way:
-    daily_risk_free_rate = [(1 + BANK_RETURN)^(-252)] - 1
-
-    Sharpe ratio can widely depend on the sampling window.
-    Originally it was meant to be calculated annually.
-
-    With that, if we calculate it daily, weekly or monthly we need to adjust it.
-    SR_annualized = K * SR
-    where:
-    K = sqrt(sample_per_year)
-    - K for daily calcuations will be equal to sqrt(252)
-    - K for weekly calcuations will be equal to sqrt(52)
-    - K for weekly calcuations will be equal to sqrt(12).
-    *********************************************************************************************
     '''
     symbols = ['SPY', 'AAPL', 'GOOG', 'IBM']
     allocation_fraction = [0.1, 0.3, 0.4, 0.2]
