@@ -130,7 +130,7 @@ if __name__ == "__main__":
     
     stocks = ['SPY', 'AAPL', 'GOOG', 'TSLA']
     
-    result_matrix = generate_random_portfolios(1000, stocks)
+    result_matrix = generate_random_portfolios(10000, stocks)
 
     #convert results array to Pandas DataFrame
     results_frame = pd.DataFrame(result_matrix,columns=['ret','stdev','sharpe'])
