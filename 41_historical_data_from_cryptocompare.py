@@ -5,6 +5,7 @@ from datetime import datetime
 import json
 from bs4 import BeautifulSoup
 import requests
+from tqdm import tqdm
 
 
 def timestamp2date(timestamp):
@@ -13,7 +14,7 @@ def timestamp2date(timestamp):
 
 def date2timestamp(date):
     # function coverts Gregorian date in a given format to timestamp
-    return datetime.strptime(date_today, '%Y-%m-%d').timestamp()
+    return datetime.strptime(date, '%Y-%m-%d').timestamp()
 
 
 def fetchCryptoOHLC(fsym, tsym):
@@ -28,7 +29,9 @@ def fetchCryptoOHLC(fsym, tsym):
 
     for j in range(2):
         df = pd.DataFrame(columns=cols)
-        limit = 252
+        # (limit-1) * 2 = days
+        # One year is around 184
+        limit = 184 
         url = "https://min-api.cryptocompare.com/data/histoday?fsym=" + fsym + "&tsym=" + tsym + "&toTs=" + str(int(curr_timestamp)) + "&limit=" + str(limit)
         response = requests.get(url)
         soup = BeautifulSoup(response.content, "html.parser")
@@ -52,22 +55,37 @@ def fetchCryptoOHLC(fsym, tsym):
             data = pd.concat([df, df0], axis=0)
 
     return data
+    
+def normalize_data(df):
+	return df / df.loc[df.index[0]]
 
-fsym = "BTC"
-tsym = "USD"
-data = fetchCryptoOHLC(fsym, tsym)
+symbols = ['ETH', 'LTC', 'ETC', 'DOGE', 'DGB', 'SC']
+#symbols = ['SC']
 
-# print the BTC/USD OHLC price-series
-print(data)
+# Intializing an empty DataFrame
+data = pd.DataFrame()
 
-# plot them all
-plt.figure(figsize=(10,4))
-plt.plot(data.open)
-plt.plot(data.high)
-plt.plot(data.low)
-plt.plot(data.close)
+# Adding columns with data for all requested cryptocurrencies
+for symbol in tqdm(symbols):
+    fsym = symbol
+    tsym = "BTC"
+    data_symbol = fetchCryptoOHLC(fsym, tsym)
+        
+    data = pd.concat([data, data_symbol['close']], axis = 1)
+    
+# Assinging correct names to the columns
+data.columns = symbols
+# Normalizing the data
+
+#plt.figure(figsize=(12, 4))
+for symbol in symbols:
+    plt.plot(data[symbol])
+plt.ylabel('Cyrrency / BTC', fontsize=12)
 plt.legend(loc=2)
-plt.title(fsym, fontsize=12)
-plt.ylabel(tsym, fontsize=12)
-
 plt.show()
+'''
+open_price = data['open']
+high_price = data['high']
+low_price = data['low']
+close_price = data['close']
+'''
